@@ -31,7 +31,9 @@ jobs:
       - run: terraform fmt -check -recursive
       - run: terraform init
       - run: terraform validate
-      - run: terraform plan -no-color -input=false | tee plan.txt
+      - run: |
+          set -o pipefail
+          terraform plan -no-color -input=false | tee plan.txt
       - uses: actions/github-script@v7
         if: always()
         with:

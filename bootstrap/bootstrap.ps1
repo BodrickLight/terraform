@@ -33,21 +33,23 @@ az role assignment create --assignee-object-id $me --assignee-principal-type Use
 Start-Sleep -Seconds 30  # let RBAC propagate
 az storage container create -n tfstate --account-name $storage --auth-mode login -o none
 
-# Reader plus listSecrets on Static Web Apps, which the azurerm provider calls on refresh.
+# Reader plus the list* actions on Static Web Apps that the azurerm provider calls on refresh.
 $roleName = 'terraform-plan-reader'
-if (-not (az role definition list --name $roleName --query '[0].name' -o tsv)) {
-    $role = @{
-        Name             = $roleName
-        Description      = 'Read-only access for terraform plan.'
-        Actions          = @('*/read', 'Microsoft.Web/staticSites/listSecrets/action')
-        NotActions       = @()
-        AssignableScopes = @("/subscriptions/$sub")
-    } | ConvertTo-Json -Compress
-    $file = New-TemporaryFile
-    Set-Content -Path $file -Value $role
+$role = @{
+    Name             = $roleName
+    Description      = 'Read-only access for terraform plan.'
+    Actions          = @('*/read', 'Microsoft.Web/staticSites/list*/action')
+    NotActions       = @()
+    AssignableScopes = @("/subscriptions/$sub")
+} | ConvertTo-Json -Compress
+$file = New-TemporaryFile
+Set-Content -Path $file -Value $role
+if (az role definition list --name $roleName --query '[0].name' -o tsv) {
+    az role definition update --role-definition "@$file" -o none
+} else {
     az role definition create --role-definition "@$file" -o none
-    Remove-Item $file
 }
+Remove-Item $file
 
 function Initialize-Identity {
     param([string]$Name, [hashtable]$Subjects, [string]$Role)
