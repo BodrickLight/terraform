@@ -34,9 +34,12 @@ $spId = az ad sp list --filter "appId eq '$appId'" --query '[0].id' -o tsv
 if (-not $spId) { $spId = az ad sp create --id $appId --query id -o tsv }
 Start-Sleep -Seconds 20  # let the new service principal replicate
 
+# This repo uses immutable-ID subject claims (see the repo's OIDC customization),
+# so the subject is owner@ownerId/repo@repoId rather than owner/repo.
+$ghSubject = 'repo:BodrickLight@13234208/terraform@1440266279'
 $subjects = @{
-    'github-pull-request'   = "repo:${ghRepo}:pull_request"
-    'github-env-production' = "repo:${ghRepo}:environment:production"
+    'github-pull-request'   = "${ghSubject}:pull_request"
+    'github-env-production' = "${ghSubject}:environment:production"
 }
 $existing = az ad app federated-credential list --id $appId --query '[].name' -o tsv
 foreach ($name in $subjects.Keys) {
