@@ -13,7 +13,7 @@ variable "minecraft_location" {
 variable "minecraft_allow_list_users" {
   type        = string
   description = "Comma-separated Xbox gamertags allowed to join. Empty means nobody can."
-  default     = ""
+  default     = "B0drickLight"
 }
 
 variable "location" {
