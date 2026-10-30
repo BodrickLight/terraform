@@ -38,7 +38,13 @@ $roleName = 'terraform-plan-reader'
 $role = @{
     Name             = $roleName
     Description      = 'Read-only access for terraform plan.'
-    Actions          = @('*/read', 'Microsoft.Web/staticSites/list*/action')
+    Actions          = @(
+        '*/read'
+        'Microsoft.Web/staticSites/listSecrets/action'
+        'Microsoft.Web/staticSites/listAppSettings/action'
+        'Microsoft.Web/staticSites/listFunctionAppSettings/action'
+        'Microsoft.Web/staticSites/listConfiguredRoles/action'
+    )
     NotActions       = @()
     AssignableScopes = @("/subscriptions/$sub")
 } | ConvertTo-Json -Compress
