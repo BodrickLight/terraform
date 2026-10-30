@@ -35,6 +35,13 @@ resource "azurerm_container_group" "minecraft" {
     cpu    = 1
     memory = 2
 
+    # Bedrock's default NetherNet transport: TCP for the signaling handshake,
+    # UDP for gameplay.
+    ports {
+      port     = 19132
+      protocol = "TCP"
+    }
+
     ports {
       port     = 19132
       protocol = "UDP"
