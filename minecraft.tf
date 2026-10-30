@@ -49,7 +49,7 @@ resource "azurerm_container_group" "minecraft" {
 
     environment_variables = {
       EULA             = "TRUE"
-      SERVER_NAME      = "Burrows"
+      SERVER_NAME      = "Joseph"
       ALLOW_LIST       = "true"
       ALLOW_LIST_USERS = var.minecraft_allow_list_users
     }
