@@ -45,7 +45,7 @@ $role = @{
         'Microsoft.Web/staticSites/listFunctionAppSettings/action'
         'Microsoft.Web/staticSites/listConfiguredRoles/action'
         # The azurerm provider lists keys when refreshing any storage account. Shared-key
-        # access is disabled on the tfstate account, so this only exposes the Minecraft world.
+        # access is disabled on the tfstate account.
         'Microsoft.Storage/storageAccounts/listKeys/action'
     )
     NotActions       = @()
