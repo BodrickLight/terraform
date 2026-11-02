@@ -28,7 +28,7 @@ resource "azurerm_static_web_app_custom_domain" "burrows" {
   }
 }
 
-resource "azurerm_static_web_app_custom_domain" "burrows" {
+resource "azurerm_static_web_app_custom_domain" "warren_band" {
   static_web_app_id = azurerm_static_web_app.burrows_site.id
   domain_name       = "warren.band"
   validation_type   = "cname-delegation"
