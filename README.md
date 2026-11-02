@@ -16,16 +16,3 @@ Terraform for my Azure subscription, applied through GitHub Actions.
 ## Local use
 
 `terraform init` then `terraform plan` (uses your `az login`).
-
-## Minecraft server
-
-A Bedrock server runs on Azure Container Instances (`minecraft.tf`). Connect to the `minecraft_address` output on port 19132. World data is on an Azure Files share.
-
-Start and stop it by hand; a stopped container group isn't billed for CPU or memory:
-
-```
-az container stop  -g minecraft -n minecraft
-az container start -g minecraft -n minecraft
-```
-
-Only gamertags in `minecraft_allow_list_users` can join.
